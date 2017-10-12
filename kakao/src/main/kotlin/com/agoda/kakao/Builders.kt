@@ -2,6 +2,8 @@ package com.agoda.kakao
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.support.annotation.ColorInt
+import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.test.espresso.Espresso
@@ -173,13 +175,40 @@ class ViewBuilder {
     }
 
     /**
+     * Matches the view which is RatingBar with given value
+     *
+     * @param rating value of RatingBar
+     */
+    fun withRating(rating: Float) {
+        viewMatchers.add(RatingBarMatcher(rating))
+    }
+    
+    /**
      * Matches the view with given drawable
      *
-     * @param resId Drawable to match
+     * @param drawable Drawable to match
      * @param toBitmap Lambda with custom Drawable -> Bitmap converter (default is null)
      */
     fun withDrawable(drawable: Drawable, toBitmap: ((drawable: Drawable) -> Bitmap)? = null) {
         viewMatchers.add(DrawableMatcher(drawable = drawable, toBitmap = toBitmap))
+    }
+
+    /**
+     * Matches the view with given background color
+     *
+     * @param resId Color to match
+     */
+    fun withBackgroundColor(@ColorRes resId: Int) {
+        viewMatchers.add(BackgroundColorMatcher(resId = resId))
+    }
+
+    /**
+     * Matches the view with given background color code
+     *
+     * @param colorCode Color code to match
+     */
+    fun withBackgroundColor(colorCode: String) {
+        viewMatchers.add(BackgroundColorMatcher(colorCode = colorCode))
     }
 
     /**
@@ -232,10 +261,24 @@ class ViewBuilder {
     }
 
     /**
-     * Matchers the view that is not completely displayed
+     * Matches the view that is not completely displayed
      */
     fun isNotCompletelyDisplayed() {
         viewMatchers.add(Matchers.not(ViewMatchers.isCompletelyDisplayed()))
+    }
+
+    /**
+     * Matches the view that is clickable
+     */
+    fun isClickable() {
+        viewMatchers.add(ViewMatchers.isClickable())
+    }
+
+    /**
+     * Matches the view that is not clickable
+     */
+    fun isNotClickable() {
+        viewMatchers.add(Matchers.not(ViewMatchers.isClickable()))
     }
 
     /**
